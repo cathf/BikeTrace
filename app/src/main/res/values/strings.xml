@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BikeTrace</string>
+    <string name="action_settings">Settings</string>
+    <string name="track_bike">Track My Bike</string>
+    <string name="title_activity_start_find_bike">Map</string>
+    <string name="track_off">Track: OFF</string>
+    <string name="track_on">Track: ON</string>
+    <string name="title_activity_start_find_bike2">Bike Map</string>
+    <string-array name="sensor_list">
+        <item>cath</item>
+        <item>cathf</item>
+        <item>john1</item>
+        <item>john2</item>
+    </string-array>
+    <string name="BiketracePrefsFile">BiketracePrefsFile</string>
+    <string name="last_selected_name">last_selected_name</string>
+    <string name="last_selected_date_time">last_selected_date_time</string>
+</resources>
