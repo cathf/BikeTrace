@@ -111,7 +111,6 @@ public class StartFindBikeActivity2 extends FragmentActivity implements OnMapRea
         protected String doInBackground(String... args) {
             // Building Parameters
             SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = settings.edit();
             //TODO: remove cath as the default
             String last_selected_name = settings.getString(String.valueOf(R.string.last_selected_name), "cath");
             //TODO: remove this default - set a year in advance for testing

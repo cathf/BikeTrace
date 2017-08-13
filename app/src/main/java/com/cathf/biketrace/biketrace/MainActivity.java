@@ -64,13 +64,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-
         // on pause of activity, always write last state values to the preferences file
-        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(String.valueOf(R.string.last_selected_date_time), last_selected_date_time);
-        editor.putString(String.valueOf(R.string.last_selected_name), last_selected_name);
-        editor.commit();
+        savePreferences(last_selected_name, last_selected_date_time);
     }
 
     @Override
@@ -102,18 +97,24 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: Toggle button name
                 if(track_button.getText().equals("Track: OFF"))
                 {
-                    Toast.makeText(getApplicationContext(), "Setting Tracking to ON", Toast.LENGTH_SHORT).show();
                     track_button.setText(R.string.track_on);
                     //TODO - get current date and time that button was pressed
                     EditText test_date = (EditText) findViewById(R.id.date_time_test_text);
+                    // get the most recently saved preferences and set them before changing anything
+                    getPreferences();
                     last_selected_date_time = test_date.getText().toString();
-                    Log.i("INFO: last_selected_date_time ", last_selected_date_time);
+                    savePreferences(last_selected_name, last_selected_date_time);
+                    Log.i("INFO: Setting Tracking to ON and last_selected_date_time to ", last_selected_date_time);
                 }
                 else if(track_button.getText().equals("Track: ON"))
                 {
-                    Toast.makeText(getApplicationContext(), "Setting Tracking to OFF", Toast.LENGTH_SHORT).show();
+
                     track_button.setText(R.string.track_off);
+                    // get the most recently saved preferences and set them before changing anything
+                    getPreferences();
                     last_selected_date_time = "";
+                    savePreferences(last_selected_name, last_selected_date_time);
+                    Log.i("INFO: Setting Tracking to OFF and last_selected_date_time to ", "empty string");
                 }
 
                 boolean x = startTrackActivity();
@@ -124,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean startTrackActivity()
     {
-        Toast.makeText(getApplicationContext(), "Send Stop/Start Signal to sensor", Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getApplicationContext(), "Send Stop/Start Signal to sensor", Toast.LENGTH_SHORT).show();
+        Log.i("INFO: Starting up startTrackActivity()", "");
         //TODO: Send sms to sensor to start/stop tracking. Currently just return true.
 
         return true;
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(last_selected_date_time != "" & track_button.getText().equals("Track: ON")) {
+                    Log.i("INFO: Starting up startFindBikeActivity()", "");
                     startFindBikeActivity();
                 }
                 else
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startFindBikeActivity()
     {
-        Toast.makeText(getApplicationContext(), "Find My Bike Button Pressed", Toast.LENGTH_SHORT).show();
+        Log.i("INFO: ", "Find My Bike Button Pressed");
         Intent FindBikeInput = new Intent(MainActivity.this, StartFindBikeActivity2.class);
         startActivity(FindBikeInput);
     }
@@ -172,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         sensor_spinner.setAdapter(adapter);
+
+        // get the most recently saved preferences and set them before changing anything
+        getPreferences();
 
         // only set the deafult of the last_selected_name if there was a name selected previously.
         if(last_selected_name != "")
@@ -194,6 +199,27 @@ public class MainActivity extends AppCompatActivity {
         {
             test_date.setText(last_selected_date_time);
         }
+    }
+
+    public void savePreferences (String lsn, String lsdt)
+    {
+        // Save the preferences of last_selected_name and last_selected_date_time so that they can be referenced correctly by other activities
+        Log.i("INFO: ", "Saving last_selected_name and last_selected_date_time as " + lsn + ", " + lsdt);
+        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(String.valueOf(R.string.last_selected_date_time), lsdt);
+        editor.putString(String.valueOf(R.string.last_selected_name), lsn);
+        editor.commit();
+    }
+
+    public void getPreferences ()
+    {
+        // Save the preferences of last_selected_name and last_selected_date_time so that they can be referenced correctly by other activities
+        Log.i("INFO: ", "Old values for last_selected_name and last_selected_date_time as " + last_selected_name + ", " + last_selected_date_time);
+        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
+        last_selected_date_time = settings.getString(String.valueOf(R.string.last_selected_date_time), "");
+        last_selected_name = settings.getString(String.valueOf(R.string.last_selected_name), "");
+        Log.i("INFO: ", "New values for last_selected_name and last_selected_date_time as " + last_selected_name + ", " + last_selected_date_time);
     }
 
 }
