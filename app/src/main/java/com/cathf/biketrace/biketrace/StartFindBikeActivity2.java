@@ -101,7 +101,7 @@ public class StartFindBikeActivity2 extends FragmentActivity implements OnMapRea
             pDialog = new ProgressDialog(StartFindBikeActivity2.this);
             pDialog.setMessage("Loading bike map points. Please wait...");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
         }
 
@@ -129,58 +129,69 @@ public class StartFindBikeActivity2 extends FragmentActivity implements OnMapRea
             JSONObject json = jParser.makeHttpRequest(url_all_products, "GET", params);
             //JSONObject json = jParser.makeHttpRequest(url_all_products, "GET");
 
-            // Check your log cat for JSON reponse
-            Log.i("INFO: ", "All Bikes json string " + json.toString());
+            if(json == null) {
+
+                // Check your log cat for JSON reponse
+                Log.i("INFO: ", "All Bikes json string is null");
+            }
+            else
+            {
+                // Check your log cat for JSON reponse
+                Log.i("INFO: ", "All Bikes json string " + json.toString());
+            }
 
             try {
-                // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                if (json != null)
+                {
+                    // Checking for SUCCESS TAG
+                    int success = json.getInt(TAG_SUCCESS);
 
-                if (success == 1) {
-                    // products found
-                    // Getting Array of Products
-                    bike_data = json.getJSONArray(TAG_BIKEDATA);
+                    if (success == 1) {
+                        // products found
+                        // Getting Array of Products
+                        bike_data = json.getJSONArray(TAG_BIKEDATA);
 
-                    // looping through All Products
-                    for (int i = 0; i < bike_data.length(); i++) {
-                        JSONObject c = bike_data.getJSONObject(i);
+                        // looping through All Products
+                        for (int i = 0; i < bike_data.length(); i++) {
+                            JSONObject c = bike_data.getJSONObject(i);
 
-                        // Storing each json item in variable
-                        String data_id = c.getString(TAG_DATAID);
-                        String sensor_name = c.getString(TAG_NAME);
-                        String gps_location = c.getString(TAG_GPSLOCATION);
-                        String date_time_tz = c.getString(TAG_DATETIMETZ);
-                        String date_time = c.getString(TAG_DATETIME);
+                            // Storing each json item in variable
+                            String data_id = c.getString(TAG_DATAID);
+                            String sensor_name = c.getString(TAG_NAME);
+                            String gps_location = c.getString(TAG_GPSLOCATION);
+                            String date_time_tz = c.getString(TAG_DATETIMETZ);
+                            String date_time = c.getString(TAG_DATETIME);
 
-                        if (!gps_location.isEmpty()) {
-                            String[] lat_long_string = gps_location.split(",");
+                            if (!gps_location.isEmpty()) {
+                                String[] lat_long_string = gps_location.split(",");
 
-                            if(lat_long_string.length == 2) {
+                                if (lat_long_string.length == 2) {
 
-                                try
-                                {
-                                    Double gps_lat = parseDouble(lat_long_string[0]);
-                                    Double gps_long = parseDouble(lat_long_string[1]);
-                                    LatLng gps_markers = new LatLng(gps_lat, gps_long);
-                                    markerPoints.add(gps_markers);
+                                    try {
+                                        Double gps_lat = parseDouble(lat_long_string[0]);
+                                        Double gps_long = parseDouble(lat_long_string[1]);
+                                        LatLng gps_markers = new LatLng(gps_lat, gps_long);
+                                        markerPoints.add(gps_markers);
+                                    } catch (NumberFormatException e) {
+                                        Log.i("Error: ", "Could not convert lat_long_sting to GPS Data " + lat_long_string + ". This point will not be displayed on the map.");
+                                    }
+                                } else {
+                                    Log.i("INFO: ", "lat_long_string variable was not the correct length");
                                 }
-                                catch (NumberFormatException e)
-                                {
-                                    Log.i("Error: ", "Could not convert lat_long_sting to GPS Data " + lat_long_string + ". This point will not be displayed on the map.");
-                                }
-                            }
-                            else {
-                                Log.i("INFO: ", "lat_long_string variable was not the correct length");
                             }
                         }
+                    } else {
+                        //markerPoints.add(new LatLng(parseDouble("0.00"), parseDouble("0.00")));
+                        Log.i("Error: ", "No data was found for this item, setting default location to lat = 0.00 and long = 0.00");
+                        //Toast.makeText(getApplicationContext(), "No data was found for this item, setting default location to lat = 0 and long = 0.", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else {
-                    //markerPoints.add(new LatLng(parseDouble("0.00"), parseDouble("0.00")));
-                    Log.i("Error: ", "No data was found for this item, setting default location to lat = 0.00 and long = 0.00");
-                    //Toast.makeText(getApplicationContext(), "No data was found for this item, setting default location to lat = 0 and long = 0.", Toast.LENGTH_SHORT).show();
+                else
+                {
+
                 }
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
 
