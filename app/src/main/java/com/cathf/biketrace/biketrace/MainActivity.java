@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     getPreferences();
                     last_selected_date_time = test_date.getText().toString();
                     savePreferences(last_selected_name, last_selected_date_time);
-                    Log.i("INFO: Setting Tracking to ON and last_selected_date_time to ", last_selected_date_time);
+                    Log.i("INFO: Tracking ON", "");
                 }
                 else if(track_button.getText().equals("Track: ON"))
                 {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     getPreferences();
                     last_selected_date_time = "";
                     savePreferences(last_selected_name, last_selected_date_time);
-                    Log.i("INFO: Setting Tracking to OFF and last_selected_date_time to ", "empty string");
+                    Log.i("INFO: Tracking OFF", "");
                 }
 
                 boolean x = startTrackActivity();
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean startTrackActivity()
     {
         //Toast.makeText(getApplicationContext(), "Send Stop/Start Signal to sensor", Toast.LENGTH_SHORT).show();
-        Log.i("INFO: Starting up startTrackActivity()", "");
+        Log.i("INFO: Starting up", " startTrackActivity()");
         //TODO: Send sms to sensor to start/stop tracking. Currently just return true.
 
         return true;
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(last_selected_date_time != "" & track_button.getText().equals("Track: ON")) {
-                    Log.i("INFO: Starting up startFindBikeActivity()", "");
+                    Log.i("INFO: Starting up", "startFindBikeActivity()");
                     startFindBikeActivity();
                 }
                 else
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         // only set the deafult of the last_selected_name if there was a name selected previously.
         if(last_selected_name != "")
         {
-            Log.i("last_selected_name variable was not empty:",last_selected_name);
+            Log.i("last_selected_name:",last_selected_name);
             sensor_spinner.setSelection(adapter.getPosition(last_selected_name));
         }
 
@@ -223,4 +223,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
