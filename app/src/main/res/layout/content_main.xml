@@ -39,22 +39,69 @@
             android:id="@+id/sensor_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="65dp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_alignRight="@+id/date_time_test_text_date_from"
+            android:layout_alignEnd="@+id/date_time_test_text_date_from"
+            android:layout_alignLeft="@+id/track_on_off_button"
+            android:layout_alignStart="@+id/track_on_off_button" />
 
         <EditText
-            android:id="@+id/date_time_test_text"
+            android:id="@+id/date_time_test_text_date_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sensor_selector"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="13dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="2017-08-12 20:00:00" />
+            android:text="2017-08-12 20:00:00"
+            android:layout_below="@+id/sensor_selector"
+            android:layout_alignLeft="@+id/track_on_off_button"
+            android:layout_alignStart="@+id/track_on_off_button" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selected_sensor_title"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_alignTop="@+id/sensor_selector"
+            android:layout_alignRight="@+id/textView2"
+            android:layout_alignEnd="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/date_time_test_text_date_from"
+            android:layout_alignBottom="@+id/date_time_test_text_date_from"
+            android:layout_toLeftOf="@+id/find_bike_button"
+            android:layout_toStartOf="@+id/find_bike_button"
+            android:text="@string/date_from_title"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+
+        <EditText
+            android:id="@+id/date_time_test_text_date_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/date_time_test_text_date_from"
+            android:layout_alignStart="@+id/date_time_test_text_date_from"
+            android:layout_below="@+id/date_time_test_text_date_from"
+            android:layout_marginTop="23dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="2017-08-30 12:00:00" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_to_title"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_alignBaseline="@+id/date_time_test_text_date_to"
+            android:layout_alignBottom="@+id/date_time_test_text_date_to"
+            android:layout_alignRight="@+id/textView2"
+            android:layout_alignEnd="@+id/textView2" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

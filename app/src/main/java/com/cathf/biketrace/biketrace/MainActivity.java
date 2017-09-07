@@ -3,7 +3,6 @@ package com.cathf.biketrace.biketrace;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     //TODO - get current date and time that button was pressed
                     String button_press_time = getCurrentDateTime();
 
-                    EditText test_date = (EditText) findViewById(R.id.date_time_test_text);
+                    EditText test_date = (EditText) findViewById(R.id.date_time_test_text_date_from);
                     // get the most recently saved preferences and set them before changing anything
                     getPreferences();
                     last_selected_date_time = test_date.getText().toString();
@@ -196,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTestTextDate(){
-        EditText test_date = (EditText) findViewById(R.id.date_time_test_text);
+        EditText test_date = (EditText) findViewById(R.id.date_time_test_text_date_from);
 
         if(last_selected_date_time == "" | last_selected_date_time == null)
         {
