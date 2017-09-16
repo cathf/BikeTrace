@@ -22,7 +22,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     public String last_selected_name;
-    public String last_selected_date_time;
+    public String last_selected_date_time_start;
+    public String last_selected_date_time_end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         // Set to null if there was no last selected name
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
         last_selected_name = settings.getString(String.valueOf(R.string.last_selected_name), "");
-        last_selected_date_time = settings.getString(String.valueOf(R.string.last_selected_date_time), "");
+        last_selected_date_time_start = settings.getString(String.valueOf(R.string.last_selected_date_time_start), "");
+        last_selected_date_time_end = settings.getString(String.valueOf(R.string.last_selected_date_time_end), "");
 
 
         setContentView(R.layout.activity_main);
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();  // Always call the superclass method first
         // on pause of activity, always write last state values to the preferences file
-        savePreferences(last_selected_name, last_selected_date_time);
+        savePreferences(last_selected_name, last_selected_date_time_start, last_selected_date_time_end);
     }
 
     @Override
@@ -104,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
                     //TODO - get current date and time that button was pressed
                     String button_press_time = getCurrentDateTime();
 
-                    EditText test_date = (EditText) findViewById(R.id.date_time_test_text_date_from);
+                    EditText test_date_start = (EditText) findViewById(R.id.date_time_test_text_date_start);
+                    EditText test_date_end = (EditText) findViewById(R.id.date_time_test_text_date_end);
                     // get the most recently saved preferences and set them before changing anything
                     getPreferences();
-                    last_selected_date_time = test_date.getText().toString();
-                    savePreferences(last_selected_name, last_selected_date_time);
+                    last_selected_date_time_start = test_date_start.getText().toString();
+                    last_selected_date_time_end = test_date_end.getText().toString();
+                    savePreferences(last_selected_name, last_selected_date_time_start, last_selected_date_time_end);
                     Log.i("INFO: Tracking ON", "");
                 }
                 else if(track_button.getText().equals("Track: ON"))
@@ -117,8 +121,9 @@ public class MainActivity extends AppCompatActivity {
                     track_button.setText(R.string.track_off);
                     // get the most recently saved preferences and set them before changing anything
                     getPreferences();
-                    last_selected_date_time = "";
-                    savePreferences(last_selected_name, last_selected_date_time);
+                    last_selected_date_time_start = "";
+                    last_selected_date_time_end = "";
+                    savePreferences(last_selected_name, last_selected_date_time_start, last_selected_date_time_end);
                     Log.i("INFO: Tracking OFF", "");
                 }
 
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(last_selected_date_time != "" & track_button.getText().equals("Track: ON")) {
+                if(last_selected_date_time_start != "" & track_button.getText().equals("Track: ON")) {
                     Log.i("INFO: Starting up", "startFindBikeActivity()");
                     startFindBikeActivity();
                 }
@@ -194,37 +199,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTestTextDate(){
-        EditText test_date = (EditText) findViewById(R.id.date_time_test_text_date_from);
+        EditText test_date_start = (EditText) findViewById(R.id.date_time_test_text_date_start);
+        EditText test_date_end = (EditText) findViewById(R.id.date_time_test_text_date_end);
 
-        if(last_selected_date_time == "" | last_selected_date_time == null)
+        if(last_selected_date_time_start == "" | last_selected_date_time_start == null)
         {
-            last_selected_date_time = test_date.getText().toString();
+            last_selected_date_time_start = test_date_start.getText().toString();
         }
         else
         {
-            test_date.setText(last_selected_date_time);
+            test_date_start.setText(last_selected_date_time_start);
+        }
+
+        if(last_selected_date_time_end == "" | last_selected_date_time_end == null)
+        {
+            last_selected_date_time_end = test_date_end.getText().toString();
+        }
+        else
+        {
+            test_date_end.setText(last_selected_date_time_end);
         }
     }
 
-    public void savePreferences (String lsn, String lsdt)
+    public void savePreferences (String lsn, String lsdts, String lsdte)
     {
-        // Save the preferences of last_selected_name and last_selected_date_time so that they can be referenced correctly by other activities
-        Log.i("INFO: ", "Saving last_selected_name and last_selected_date_time as " + lsn + ", " + lsdt);
+        // Save the preferences of last_selected_name and last_selected_date_time_start so that they can be referenced correctly by other activities
+        Log.i("INFO: ", "Saving last_selected_name and last_selected_date_time_start as " + lsn + ", " + lsdts);
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(String.valueOf(R.string.last_selected_date_time), lsdt);
+        editor.putString(String.valueOf(R.string.last_selected_date_time_start), lsdts);
+        editor.putString(String.valueOf(R.string.last_selected_date_time_end), lsdte);
         editor.putString(String.valueOf(R.string.last_selected_name), lsn);
         editor.commit();
     }
 
     public void getPreferences ()
     {
-        // Save the preferences of last_selected_name and last_selected_date_time so that they can be referenced correctly by other activities
-        Log.i("INFO: ", "Old values for last_selected_name and last_selected_date_time as " + last_selected_name + ", " + last_selected_date_time);
+        // Save the preferences of last_selected_name and last_selected_date_time_start so that they can be referenced correctly by other activities
+        Log.i("INFO: ", "Old values for last_selected_name and last_selected_date_time_start as " + last_selected_name + ", " + last_selected_date_time_start);
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.BiketracePrefsFile), Context.MODE_PRIVATE);
-        last_selected_date_time = settings.getString(String.valueOf(R.string.last_selected_date_time), "");
+        last_selected_date_time_start = settings.getString(String.valueOf(R.string.last_selected_date_time_start), "");
+        last_selected_date_time_end = settings.getString(String.valueOf(R.string.last_selected_date_time_end), "");
         last_selected_name = settings.getString(String.valueOf(R.string.last_selected_name), "");
-        Log.i("INFO: ", "New values for last_selected_name and last_selected_date_time as " + last_selected_name + ", " + last_selected_date_time);
+        Log.i("INFO: ", "New values for last_selected_name and last_selected_date_time_start as " + last_selected_name + ", " + last_selected_date_time_start);
     }
 
     private String getCurrentDateTime()

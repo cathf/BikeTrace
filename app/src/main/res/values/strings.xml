@@ -14,7 +14,8 @@
     </string-array>
     <string name="BiketracePrefsFile">BiketracePrefsFile</string>
     <string name="last_selected_name">last_selected_name</string>
-    <string name="last_selected_date_time">last_selected_date_time</string>
+    <string name="last_selected_date_time_start">last_selected_date_time_start</string>
+    <string name="last_selected_date_time_end">last_selected_date_time_end</string>
     <string name="selected_sensor_title">Selected Sensor: </string>
     <string name="date_from_title">Date From: </string>
     <string name="date_to_title">Date To: </string>

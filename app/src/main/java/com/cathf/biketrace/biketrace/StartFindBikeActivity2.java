@@ -40,7 +40,11 @@ public class StartFindBikeActivity2 extends FragmentActivity implements OnMapRea
     ArrayList<HashMap<String, String>> productsList;
     ArrayList<LatLng> markerPoints;
 
+    // the below URL is the final URL for get_bike_data info.
     private static String url_all_products = "http://ec2-34-250-175-136.eu-west-1.compute.amazonaws.com/BikeTrace/get_bike_data_mysql.php";
+
+    // the below URL is the TEST url for get bike data info when things are changed on the server side.
+    //private static String url_all_products = "http://ec2-34-250-175-136.eu-west-1.compute.amazonaws.com/BikeTrace/test_get_bike_data_mysql.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -114,15 +118,17 @@ public class StartFindBikeActivity2 extends FragmentActivity implements OnMapRea
             //TODO: remove cath as the default
             String last_selected_name = settings.getString(String.valueOf(R.string.last_selected_name), "cath");
             //TODO: remove this default - set a year in advance for testing
-            String last_selected_date_time = settings.getString(String.valueOf(R.string.last_selected_date_time), "2018-08-12 01:00:00");
+            String last_selected_date_time_start = settings.getString(String.valueOf(R.string.last_selected_date_time_start), "2018-08-12 01:00:00");
+            String last_selected_date_time_end = settings.getString(String.valueOf(R.string.last_selected_date_time_end), "2018-08-12 01:00:00");
 
-            Log.i("INFO: ", "Information retrieved for " + last_selected_name + ", " + last_selected_date_time);
+            Log.i("INFO: ", "Information retrieved for " + last_selected_name + ", " + last_selected_date_time_start);
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             //TODO: set params name and date from the app variables
             //TODO: make app not crash if it doesn't find any data points
             params.add(new BasicNameValuePair("s", last_selected_name));
-            params.add(new BasicNameValuePair("d", last_selected_date_time));
+            params.add(new BasicNameValuePair("d", last_selected_date_time_start));
+            params.add(new BasicNameValuePair("e", last_selected_date_time_end));
 
 
             // getting JSON string from URL
